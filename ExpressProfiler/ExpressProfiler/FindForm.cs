@@ -1,11 +1,15 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Windows.Forms;
+
+#endregion
 
 namespace ExpressProfiler
 {
     public partial class FindForm : Form
     {
-        private MainForm m_mainForm;
+        private readonly MainForm m_mainForm;
 
         public FindForm(MainForm f)
         {

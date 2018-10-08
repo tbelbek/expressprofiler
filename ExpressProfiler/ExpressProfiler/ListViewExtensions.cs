@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#region usings
+
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
+#endregion
 
 //Taken From http://stackoverflow.com/questions/254129/how-to-i-display-a-sort-arrow-in-the-header-of-a-list-view-column-using-c
 //
@@ -14,96 +16,93 @@ using System.Windows.Forms;
 
 namespace ExpressProfiler
 {
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	public static class ListViewExtensions
-	{
-		[StructLayout(LayoutKind.Sequential)]
-		public struct HDITEM
-		{
-			public Mask mask;
-			public int cxy;
-			[MarshalAs(UnmanagedType.LPTStr)]
-			public string pszText;
-			public IntPtr hbm;
-			public int cchTextMax;
-			public Format fmt;
-			public IntPtr lParam;
-			// _WIN32_IE >= 0x0300 
-			public int iImage;
-			public int iOrder;
-			// _WIN32_IE >= 0x0500
-			public uint type;
-			public IntPtr pvFilter;
-			// _WIN32_WINNT >= 0x0600
-			public uint state;
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static class ListViewExtensions
+    {
+        public const int LVM_FIRST = 0x1000;
+        public const int LVM_GETHEADER = LVM_FIRST + 31;
 
-			[Flags]
-			public enum Mask
-			{
-				Format = 0x4,       // HDI_FORMAT
-			};
+        public const int HDM_FIRST = 0x1200;
+        public const int HDM_GETITEM = HDM_FIRST + 11;
+        public const int HDM_SETITEM = HDM_FIRST + 12;
 
-			[Flags]
-			public enum Format
-			{
-				SortDown = 0x200,   // HDF_SORTDOWN
-				SortUp = 0x400,     // HDF_SORTUP
-			};
-		};
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-		public const int LVM_FIRST = 0x1000;
-		public const int LVM_GETHEADER = LVM_FIRST + 31;
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, ref HDITEM lParam);
 
-		public const int HDM_FIRST = 0x1200;
-		public const int HDM_GETITEM = HDM_FIRST + 11;
-		public const int HDM_SETITEM = HDM_FIRST + 12;
+        public static void SetSortIcon(this ListView listViewControl, int columnIndex, SortOrder order)
+        {
+            var columnHeader = SendMessage(listViewControl.Handle, LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero);
+            for (var columnNumber = 0; columnNumber <= listViewControl.Columns.Count - 1; columnNumber++)
+            {
+                var columnPtr = new IntPtr(columnNumber);
+                var item = new HDITEM
+                {
+                    mask = HDITEM.Mask.Format
+                };
 
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 msg, IntPtr wParam, IntPtr lParam);
+                if (SendMessage(columnHeader, HDM_GETITEM, columnPtr, ref item) == IntPtr.Zero)
+                    throw new Win32Exception();
 
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 msg, IntPtr wParam, ref HDITEM lParam);
+                if (order != SortOrder.None && columnNumber == columnIndex)
+                    switch (order)
+                    {
+                        case SortOrder.Ascending:
+                            item.fmt &= ~HDITEM.Format.SortDown;
+                            item.fmt |= HDITEM.Format.SortUp;
+                            break;
+                        case SortOrder.Descending:
+                            item.fmt &= ~HDITEM.Format.SortUp;
+                            item.fmt |= HDITEM.Format.SortDown;
+                            break;
+                    }
+                else
+                    item.fmt &= ~HDITEM.Format.SortDown & ~HDITEM.Format.SortUp;
 
-		public static void SetSortIcon(this ListView listViewControl, int columnIndex, SortOrder order)
-		{
-			IntPtr columnHeader = SendMessage(listViewControl.Handle, LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero);
-			for (int columnNumber = 0; columnNumber <= listViewControl.Columns.Count - 1; columnNumber++)
-			{
-				var columnPtr = new IntPtr(columnNumber);
-				var item = new HDITEM
-				{
-					mask = HDITEM.Mask.Format
-				};
+                if (SendMessage(columnHeader, HDM_SETITEM, columnPtr, ref item) == IntPtr.Zero)
+                    throw new Win32Exception();
+            }
+        }
 
-				if (SendMessage(columnHeader, HDM_GETITEM, columnPtr, ref item) == IntPtr.Zero)
-				{
-					throw new Win32Exception();
-				}
+        [StructLayout(LayoutKind.Sequential)]
+        public struct HDITEM
+        {
+            public Mask mask;
+            public int cxy;
+            [MarshalAs(UnmanagedType.LPTStr)] public string pszText;
+            public IntPtr hbm;
+            public int cchTextMax;
+            public Format fmt;
 
-				if (order != SortOrder.None && columnNumber == columnIndex)
-				{
-					switch (order)
-					{
-						case SortOrder.Ascending:
-							item.fmt &= ~HDITEM.Format.SortDown;
-							item.fmt |= HDITEM.Format.SortUp;
-							break;
-						case SortOrder.Descending:
-							item.fmt &= ~HDITEM.Format.SortUp;
-							item.fmt |= HDITEM.Format.SortDown;
-							break;
-					}
-				}
-				else
-				{
-					item.fmt &= ~HDITEM.Format.SortDown & ~HDITEM.Format.SortUp;
-				}
+            public IntPtr lParam;
 
-				if (SendMessage(columnHeader, HDM_SETITEM, columnPtr, ref item) == IntPtr.Zero)
-				{
-					throw new Win32Exception();
-				}
-			}
-		}
-	}
+            // _WIN32_IE >= 0x0300 
+            public int iImage;
+
+            public int iOrder;
+
+            // _WIN32_IE >= 0x0500
+            public uint type;
+
+            public IntPtr pvFilter;
+
+            // _WIN32_WINNT >= 0x0600
+            public uint state;
+
+            [Flags]
+            public enum Mask
+            {
+                Format = 0x4 // HDI_FORMAT
+            }
+
+            [Flags]
+            public enum Format
+            {
+                SortDown = 0x200, // HDF_SORTDOWN
+                SortUp = 0x400 // HDF_SORTUP
+            }
+        }
+    }
 }

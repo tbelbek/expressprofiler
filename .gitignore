@@ -3,3 +3,9 @@
 ################################################################################
 
 /ExpressProfiler/.vs/ExpressProfiler/v15
+/ExpressProfiler/ExpressProfiler/bin/Debug
+/ExpressProfiler/ExpressProfiler/obj/Debug
+/ExpressProfiler/ExpressProfiler.Ecosystem/bin/Debug
+/ExpressProfiler/ExpressProfiler.Ecosystem/obj/Debug
+/ExpressProfiler/ExpressProfiler.EcosystemInstall/bin/Debug
+/ExpressProfiler/ExpressProfiler.EcosystemInstall/obj/Debug

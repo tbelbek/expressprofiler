@@ -1,10 +1,15 @@
 ﻿//Traceutils assembly
 //writen by Locky, 2009. 
+
+#region usings
+
 using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
+
+#endregion
 
 namespace ExpressProfiler
 {
@@ -31,7 +36,6 @@ namespace ExpressProfiler
 
     public static class ProfilerEvents
     {
-
         /*
         select 'public static class '+replace(name,' ','')+'
         {
@@ -49,226 +53,76 @@ namespace ExpressProfiler
 // ReSharper disable RedundantExplicitArraySize
         public static readonly string[] Names = new string[202]
 // ReSharper restore RedundantExplicitArraySize
-                                                    {
-                                                        ""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,"RPC:Completed"
-                                                        ,"RPC:Starting"
-                                                        ,"SQL:BatchCompleted"
-                                                        ,"SQL:BatchStarting"
-                                                        ,"Audit Login"
-                                                        ,"Audit Logout"
-                                                        ,"Attention"
-                                                        ,"ExistingConnection"
-                                                        ,"Audit Server Starts And Stops"
-                                                        ,"DTCTransaction"
-                                                        ,"Audit Login Failed"
-                                                        ,"EventLog"
-                                                        ,"ErrorLog"
-                                                        ,"Lock:Released"
-                                                        ,"Lock:Acquired"
-                                                        ,"Lock:Deadlock"
-                                                        ,"Lock:Cancel"
-                                                        ,"Lock:Timeout"
-                                                        ,"Degree of Parallelism (7.0 Insert)"
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,"Exception"
-                                                        ,"SP:CacheMiss"
-                                                        ,"SP:CacheInsert"
-                                                        ,"SP:CacheRemove"
-                                                        ,"SP:Recompile"
-                                                        ,"SP:CacheHit"
-                                                        ,"Deprecated"
-                                                        ,"SQL:StmtStarting"
-                                                        ,"SQL:StmtCompleted"
-                                                        ,"SP:Starting"
-                                                        ,"SP:Completed"
-                                                        ,"SP:StmtStarting"
-                                                        ,"SP:StmtCompleted"
-                                                        ,"Object:Created"
-                                                        ,"Object:Deleted"
-                                                        ,""
-                                                        ,""
-                                                        ,"SQLTransaction"
-                                                        ,"Scan:Started"
-                                                        ,"Scan:Stopped"
-                                                        ,"CursorOpen"
-                                                        ,"TransactionLog"
-                                                        ,"Hash Warning"
-                                                        ,""
-                                                        ,""
-                                                        ,"Auto Stats"
-                                                        ,"Lock:Deadlock Chain"
-                                                        ,"Lock:Escalation"
-                                                        ,"OLEDB Errors"
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,""
-                                                        ,"Execution Warnings"
-                                                        ,"Showplan Text (Unencoded)"
-                                                        ,"Sort Warnings"
-                                                        ,"CursorPrepare"
-                                                        ,"Prepare SQL"
-                                                        ,"Exec Prepared SQL"
-                                                        ,"Unprepare SQL"
-                                                        ,"CursorExecute"
-                                                        ,"CursorRecompile"
-                                                        ,"CursorImplicitConversion"
-                                                        ,"CursorUnprepare"
-                                                        ,"CursorClose"
-                                                        ,"Missing Column Statistics"
-                                                        ,"Missing Join Predicate"
-                                                        ,"Server Memory Change"
-                                                        ,"UserConfigurable:0"
-                                                        ,"UserConfigurable:1"
-                                                        ,"UserConfigurable:2"
-                                                        ,"UserConfigurable:3"
-                                                        ,"UserConfigurable:4"
-                                                        ,"UserConfigurable:5"
-                                                        ,"UserConfigurable:6"
-                                                        ,"UserConfigurable:7"
-                                                        ,"UserConfigurable:8"
-                                                        ,"UserConfigurable:9"
-                                                        ,"Data File Auto Grow"
-                                                        ,"Log File Auto Grow"
-                                                        ,"Data File Auto Shrink"
-                                                        ,"Log File Auto Shrink"
-                                                        ,"Showplan Text"
-                                                        ,"Showplan All"
-                                                        ,"Showplan Statistics Profile"
-                                                        ,""
-                                                        ,"RPC Output Parameter"
-                                                        ,""
-                                                        ,"Audit Database Scope GDR Event"
-                                                        ,"Audit Schema Object GDR Event"
-                                                        ,"Audit Addlogin Event"
-                                                        ,"Audit Login GDR Event"
-                                                        ,"Audit Login Change Property Event"
-                                                        ,"Audit Login Change Password Event"
-                                                        ,"Audit Add Login to Server Role Event"
-                                                        ,"Audit Add DB User Event"
-                                                        ,"Audit Add Member to DB Role Event"
-                                                        ,"Audit Add Role Event"
-                                                        ,"Audit App Role Change Password Event"
-                                                        ,"Audit Statement Permission Event"
-                                                        ,"Audit Schema Object Access Event"
-                                                        ,"Audit Backup/Restore Event"
-                                                        ,"Audit DBCC Event"
-                                                        ,"Audit Change Audit Event"
-                                                        ,"Audit Object Derived Permission Event"
-                                                        ,"OLEDB Call Event"
-                                                        ,"OLEDB QueryInterface Event"
-                                                        ,"OLEDB DataRead Event"
-                                                        ,"Showplan XML"
-                                                        ,"SQL:FullTextQuery"
-                                                        ,"Broker:Conversation"
-                                                        ,"Deprecation Announcement"
-                                                        ,"Deprecation Final Support"
-                                                        ,"Exchange Spill Event"
-                                                        ,"Audit Database Management Event"
-                                                        ,"Audit Database Object Management Event"
-                                                        ,"Audit Database Principal Management Event"
-                                                        ,"Audit Schema Object Management Event"
-                                                        ,"Audit Server Principal Impersonation Event"
-                                                        ,"Audit Database Principal Impersonation Event"
-                                                        ,"Audit Server Object Take Ownership Event"
-                                                        ,"Audit Database Object Take Ownership Event"
-                                                        ,"Broker:Conversation Group"
-                                                        ,"Blocked process report"
-                                                        ,"Broker:Connection"
-                                                        ,"Broker:Forwarded Message Sent"
-                                                        ,"Broker:Forwarded Message Dropped"
-                                                        ,"Broker:Message Classify"
-                                                        ,"Broker:Transmission"
-                                                        ,"Broker:Queue Disabled"
-                                                        ,"Broker:Mirrored Route State Changed"
-                                                        ,""
-                                                        ,"Showplan XML Statistics Profile"
-                                                        ,""
-                                                        ,"Deadlock graph"
-                                                        ,"Broker:Remote Message Acknowledgement"
-                                                        ,"Trace File Close"
-                                                        ,""
-                                                        ,"Audit Change Database Owner"
-                                                        ,"Audit Schema Object Take Ownership Event"
-                                                        ,""
-                                                        ,"FT:Crawl Started"
-                                                        ,"FT:Crawl Stopped"
-                                                        ,"FT:Crawl Aborted"
-                                                        ,"Audit Broker Conversation"
-                                                        ,"Audit Broker Login"
-                                                        ,"Broker:Message Undeliverable"
-                                                        ,"Broker:Corrupted Message"
-                                                        ,"User Error Message"
-                                                        ,"Broker:Activation"
-                                                        ,"Object:Altered"
-                                                        ,"Performance statistics"
-                                                        ,"SQL:StmtRecompile"
-                                                        ,"Database Mirroring State Change"
-                                                        ,"Showplan XML For Query Compile"
-                                                        ,"Showplan All For Query Compile"
-                                                        ,"Audit Server Scope GDR Event"
-                                                        ,"Audit Server Object GDR Event"
-                                                        ,"Audit Database Object GDR Event"
-                                                        ,"Audit Server Operation Event"
-                                                        ,""
-                                                        ,"Audit Server Alter Trace Event"
-                                                        ,"Audit Server Object Management Event"
-                                                        ,"Audit Server Principal Management Event"
-                                                        ,"Audit Database Operation Event"
-                                                        ,""
-                                                        ,"Audit Database Object Access Event"
-                                                        ,"TM: Begin Tran starting"
-                                                        ,"TM: Begin Tran completed"
-                                                        ,"TM: Promote Tran starting"
-                                                        ,"TM: Promote Tran completed"
-                                                        ,"TM: Commit Tran starting"
-                                                        ,"TM: Commit Tran completed"
-                                                        ,"TM: Rollback Tran starting"
-                                                        ,"TM: Rollback Tran completed"
-                                                        ,"Lock:Timeout (timeout > 0)"
-                                                        ,"Progress Report: Online Index Operation"
-                                                        ,"TM: Save Tran starting"
-                                                        ,"TM: Save Tran completed"
-                                                        ,"Background Job Error"
-                                                        ,"OLEDB Provider Information"
-                                                        ,"Mount Tape"
-                                                        ,"Assembly Load"
-                                                        ,""
-                                                        ,"XQuery Static Type"
-                                                        ,"QN: Subscription"
-                                                        ,"QN: Parameter table"
-                                                        ,"QN: Template"
-                                               
-                                                    }
-                                        ;
+        {
+            "", "", "", "", "", "", "", "", "", "", "RPC:Completed", "RPC:Starting", "SQL:BatchCompleted",
+            "SQL:BatchStarting", "Audit Login", "Audit Logout", "Attention", "ExistingConnection",
+            "Audit Server Starts And Stops", "DTCTransaction", "Audit Login Failed", "EventLog", "ErrorLog",
+            "Lock:Released", "Lock:Acquired", "Lock:Deadlock", "Lock:Cancel", "Lock:Timeout",
+            "Degree of Parallelism (7.0 Insert)", "", "", "", "", "Exception", "SP:CacheMiss", "SP:CacheInsert",
+            "SP:CacheRemove", "SP:Recompile", "SP:CacheHit", "Deprecated", "SQL:StmtStarting", "SQL:StmtCompleted",
+            "SP:Starting", "SP:Completed", "SP:StmtStarting", "SP:StmtCompleted", "Object:Created", "Object:Deleted",
+            "", "", "SQLTransaction", "Scan:Started", "Scan:Stopped", "CursorOpen", "TransactionLog", "Hash Warning",
+            "", "", "Auto Stats", "Lock:Deadlock Chain", "Lock:Escalation", "OLEDB Errors", "", "", "", "", "",
+            "Execution Warnings", "Showplan Text (Unencoded)", "Sort Warnings", "CursorPrepare", "Prepare SQL",
+            "Exec Prepared SQL", "Unprepare SQL", "CursorExecute", "CursorRecompile", "CursorImplicitConversion",
+            "CursorUnprepare", "CursorClose", "Missing Column Statistics", "Missing Join Predicate",
+            "Server Memory Change", "UserConfigurable:0", "UserConfigurable:1", "UserConfigurable:2",
+            "UserConfigurable:3", "UserConfigurable:4", "UserConfigurable:5", "UserConfigurable:6",
+            "UserConfigurable:7", "UserConfigurable:8", "UserConfigurable:9", "Data File Auto Grow",
+            "Log File Auto Grow", "Data File Auto Shrink", "Log File Auto Shrink", "Showplan Text", "Showplan All",
+            "Showplan Statistics Profile", "", "RPC Output Parameter", "", "Audit Database Scope GDR Event",
+            "Audit Schema Object GDR Event", "Audit Addlogin Event", "Audit Login GDR Event",
+            "Audit Login Change Property Event", "Audit Login Change Password Event",
+            "Audit Add Login to Server Role Event", "Audit Add DB User Event", "Audit Add Member to DB Role Event",
+            "Audit Add Role Event", "Audit App Role Change Password Event", "Audit Statement Permission Event",
+            "Audit Schema Object Access Event", "Audit Backup/Restore Event", "Audit DBCC Event",
+            "Audit Change Audit Event", "Audit Object Derived Permission Event", "OLEDB Call Event",
+            "OLEDB QueryInterface Event", "OLEDB DataRead Event", "Showplan XML", "SQL:FullTextQuery",
+            "Broker:Conversation", "Deprecation Announcement", "Deprecation Final Support", "Exchange Spill Event",
+            "Audit Database Management Event", "Audit Database Object Management Event",
+            "Audit Database Principal Management Event", "Audit Schema Object Management Event",
+            "Audit Server Principal Impersonation Event", "Audit Database Principal Impersonation Event",
+            "Audit Server Object Take Ownership Event", "Audit Database Object Take Ownership Event",
+            "Broker:Conversation Group", "Blocked process report", "Broker:Connection", "Broker:Forwarded Message Sent",
+            "Broker:Forwarded Message Dropped", "Broker:Message Classify", "Broker:Transmission",
+            "Broker:Queue Disabled", "Broker:Mirrored Route State Changed", "", "Showplan XML Statistics Profile", "",
+            "Deadlock graph", "Broker:Remote Message Acknowledgement", "Trace File Close", "",
+            "Audit Change Database Owner", "Audit Schema Object Take Ownership Event", "", "FT:Crawl Started",
+            "FT:Crawl Stopped", "FT:Crawl Aborted", "Audit Broker Conversation", "Audit Broker Login",
+            "Broker:Message Undeliverable", "Broker:Corrupted Message", "User Error Message", "Broker:Activation",
+            "Object:Altered", "Performance statistics", "SQL:StmtRecompile", "Database Mirroring State Change",
+            "Showplan XML For Query Compile", "Showplan All For Query Compile", "Audit Server Scope GDR Event",
+            "Audit Server Object GDR Event", "Audit Database Object GDR Event", "Audit Server Operation Event", "",
+            "Audit Server Alter Trace Event", "Audit Server Object Management Event",
+            "Audit Server Principal Management Event", "Audit Database Operation Event", "",
+            "Audit Database Object Access Event", "TM: Begin Tran starting", "TM: Begin Tran completed",
+            "TM: Promote Tran starting", "TM: Promote Tran completed", "TM: Commit Tran starting",
+            "TM: Commit Tran completed", "TM: Rollback Tran starting", "TM: Rollback Tran completed",
+            "Lock:Timeout (timeout > 0)", "Progress Report: Online Index Operation", "TM: Save Tran starting",
+            "TM: Save Tran completed", "Background Job Error", "OLEDB Provider Information", "Mount Tape",
+            "Assembly Load", "", "XQuery Static Type", "QN: Subscription", "QN: Parameter table", "QN: Template"
+        };
+
         public static class Cursors
         {
             /*Cursors*/
             public const int CursorOpen = 53;
+
             /*Cursors*/
             public const int CursorPrepare = 70;
+
             /*Cursors*/
             public const int CursorExecute = 74;
+
             /*Cursors*/
             public const int CursorRecompile = 75;
+
             /*Cursors*/
             public const int CursorImplicitConversion = 76;
+
             /*Cursors*/
             public const int CursorUnprepare = 77;
+
             /*Cursors*/
             public const int CursorClose = 78;
         }
@@ -277,12 +131,16 @@ namespace ExpressProfiler
         {
             /*Database*/
             public const int DataFileAutoGrow = 92;
+
             /*Database*/
             public const int LogFileAutoGrow = 93;
+
             /*Database*/
             public const int DataFileAutoShrink = 94;
+
             /*Database*/
             public const int LogFileAutoShrink = 95;
+
             /*Database*/
             public const int DatabaseMirroringStateChange = 167;
         }
@@ -291,28 +149,40 @@ namespace ExpressProfiler
         {
             /*Errors and Warnings*/
             public const int Attention = 16;
+
             /*Errors and Warnings*/
             public const int EventLog = 21;
+
             /*Errors and Warnings*/
             public const int ErrorLog = 22;
+
             /*Errors and Warnings*/
             public const int Exception = 33;
+
             /*Errors and Warnings*/
             public const int HashWarning = 55;
+
             /*Errors and Warnings*/
             public const int ExecutionWarnings = 67;
+
             /*Errors and Warnings*/
             public const int SortWarnings = 69;
+
             /*Errors and Warnings*/
             public const int MissingColumnStatistics = 79;
+
             /*Errors and Warnings*/
             public const int MissingJoinPredicate = 80;
+
             /*Errors and Warnings*/
             public const int ExchangeSpillEvent = 127;
+
             /*Errors and Warnings*/
             public const int Blockedprocessreport = 137;
+
             /*Errors and Warnings*/
             public const int UserErrorMessage = 162;
+
             /*Errors and Warnings*/
             public const int BackgroundJobError = 193;
         }
@@ -321,20 +191,28 @@ namespace ExpressProfiler
         {
             /*Locks*/
             public const int LockReleased = 23;
+
             /*Locks*/
             public const int LockAcquired = 24;
+
             /*Locks*/
             public const int LockDeadlock = 25;
+
             /*Locks*/
             public const int LockCancel = 26;
+
             /*Locks*/
             public const int LockTimeout = 27;
+
             /*Locks*/
             public const int LockDeadlockChain = 59;
+
             /*Locks*/
             public const int LockEscalation = 60;
+
             /*Locks*/
             public const int Deadlockgraph = 148;
+
             /*Locks*/
             public const int LockTimeout100 = 189;
         }
@@ -343,8 +221,10 @@ namespace ExpressProfiler
         {
             /*Objects*/
             public const int ObjectCreated = 46;
+
             /*Objects*/
             public const int ObjectDeleted = 47;
+
             /*Objects*/
             public const int ObjectAltered = 164;
         }
@@ -353,26 +233,37 @@ namespace ExpressProfiler
         {
             /*Performance*/
             public const int DegreeofParallelism70Insert = 28;
+
             /*Performance*/
             public const int AutoStats = 58;
+
             /*Performance*/
             public const int ShowplanTextUnencoded = 68;
+
             /*Performance*/
             public const int ShowplanText = 96;
+
             /*Performance*/
             public const int ShowplanAll = 97;
+
             /*Performance*/
             public const int ShowplanStatisticsProfile = 98;
+
             /*Performance*/
             public const int ShowplanXML = 122;
+
             /*Performance*/
             public const int SQLFullTextQuery = 123;
+
             /*Performance*/
             public const int ShowplanXMLStatisticsProfile = 146;
+
             /*Performance*/
             public const int Performancestatistics = 165;
+
             /*Performance*/
             public const int ShowplanXMLForQueryCompile = 168;
+
             /*Performance*/
             public const int ShowplanAllForQueryCompile = 169;
         }
@@ -381,6 +272,7 @@ namespace ExpressProfiler
         {
             /*Scans*/
             public const int ScanStarted = 51;
+
             /*Scans*/
             public const int ScanStopped = 52;
         }
@@ -389,86 +281,127 @@ namespace ExpressProfiler
         {
             /*Security Audit*/
             public const int AuditLogin = 14;
+
             /*Security Audit*/
             public const int AuditLogout = 15;
+
             /*Security Audit*/
             public const int AuditServerStartsAndStops = 18;
+
             /*Security Audit*/
             public const int AuditLoginFailed = 20;
+
             /*Security Audit*/
             public const int AuditDatabaseScopeGDREvent = 102;
+
             /*Security Audit*/
             public const int AuditSchemaObjectGDREvent = 103;
+
             /*Security Audit*/
             public const int AuditAddloginEvent = 104;
+
             /*Security Audit*/
             public const int AuditLoginGDREvent = 105;
+
             /*Security Audit*/
             public const int AuditLoginChangePropertyEvent = 106;
+
             /*Security Audit*/
             public const int AuditLoginChangePasswordEvent = 107;
+
             /*Security Audit*/
             public const int AuditAddLogintoServerRoleEvent = 108;
+
             /*Security Audit*/
             public const int AuditAddDBUserEvent = 109;
+
             /*Security Audit*/
             public const int AuditAddMembertoDBRoleEvent = 110;
+
             /*Security Audit*/
             public const int AuditAddRoleEvent = 111;
+
             /*Security Audit*/
             public const int AuditAppRoleChangePasswordEvent = 112;
+
             /*Security Audit*/
             public const int AuditStatementPermissionEvent = 113;
+
             /*Security Audit*/
             public const int AuditSchemaObjectAccessEvent = 114;
+
             /*Security Audit*/
             public const int AuditBackupRestoreEvent = 115;
+
             /*Security Audit*/
             public const int AuditDBCCEvent = 116;
+
             /*Security Audit*/
             public const int AuditChangeAuditEvent = 117;
+
             /*Security Audit*/
             public const int AuditObjectDerivedPermissionEvent = 118;
+
             /*Security Audit*/
             public const int AuditDatabaseManagementEvent = 128;
+
             /*Security Audit*/
             public const int AuditDatabaseObjectManagementEvent = 129;
+
             /*Security Audit*/
             public const int AuditDatabasePrincipalManagementEvent = 130;
+
             /*Security Audit*/
             public const int AuditSchemaObjectManagementEvent = 131;
+
             /*Security Audit*/
             public const int AuditServerPrincipalImpersonationEvent = 132;
+
             /*Security Audit*/
             public const int AuditDatabasePrincipalImpersonationEvent = 133;
+
             /*Security Audit*/
             public const int AuditServerObjectTakeOwnershipEvent = 134;
+
             /*Security Audit*/
             public const int AuditDatabaseObjectTakeOwnershipEvent = 135;
+
             /*Security Audit*/
             public const int AuditChangeDatabaseOwner = 152;
+
             /*Security Audit*/
             public const int AuditSchemaObjectTakeOwnershipEvent = 153;
+
             /*Security Audit*/
             public const int AuditBrokerConversation = 158;
+
             /*Security Audit*/
             public const int AuditBrokerLogin = 159;
+
             /*Security Audit*/
             public const int AuditServerScopeGDREvent = 170;
+
             /*Security Audit*/
             public const int AuditServerObjectGDREvent = 171;
+
             /*Security Audit*/
             public const int AuditDatabaseObjectGDREvent = 172;
+
             /*Security Audit*/
             public const int AuditServerOperationEvent = 173;
+
             /*Security Audit*/
             public const int AuditServerAlterTraceEvent = 175;
+
             /*Security Audit*/
             public const int AuditServerObjectManagementEvent = 176;
+
             /*Security Audit*/
             public const int AuditServerPrincipalManagementEvent = 177;
+
             /*Security Audit*/
             public const int AuditDatabaseOperationEvent = 178;
+
             /*Security Audit*/
             public const int AuditDatabaseObjectAccessEvent = 180;
         }
@@ -477,8 +410,10 @@ namespace ExpressProfiler
         {
             /*Server*/
             public const int ServerMemoryChange = 81;
+
             /*Server*/
             public const int TraceFileClose = 150;
+
             /*Server*/
             public const int MountTape = 195;
         }
@@ -493,28 +428,40 @@ namespace ExpressProfiler
         {
             /*Stored Procedures*/
             public const int RPCCompleted = 10;
+
             /*Stored Procedures*/
             public const int RPCStarting = 11;
+
             /*Stored Procedures*/
             public const int SPCacheMiss = 34;
+
             /*Stored Procedures*/
             public const int SPCacheInsert = 35;
+
             /*Stored Procedures*/
             public const int SPCacheRemove = 36;
+
             /*Stored Procedures*/
             public const int SPRecompile = 37;
+
             /*Stored Procedures*/
             public const int SPCacheHit = 38;
+
             /*Stored Procedures*/
             public const int Deprecated = 39;
+
             /*Stored Procedures*/
             public const int SPStarting = 42;
+
             /*Stored Procedures*/
             public const int SPCompleted = 43;
+
             /*Stored Procedures*/
             public const int SPStmtStarting = 44;
+
             /*Stored Procedures*/
             public const int SPStmtCompleted = 45;
+
             /*Stored Procedures*/
             public const int RPCOutputParameter = 100;
         }
@@ -523,28 +470,40 @@ namespace ExpressProfiler
         {
             /*Transactions*/
             public const int DTCTransaction = 19;
+
             /*Transactions*/
             public const int SQLTransaction = 50;
+
             /*Transactions*/
             public const int TransactionLog = 54;
+
             /*Transactions*/
             public const int TMBeginTranstarting = 181;
+
             /*Transactions*/
             public const int TMBeginTrancompleted = 182;
+
             /*Transactions*/
             public const int TMPromoteTranstarting = 183;
+
             /*Transactions*/
             public const int TMPromoteTrancompleted = 184;
+
             /*Transactions*/
             public const int TMCommitTranstarting = 185;
+
             /*Transactions*/
             public const int TMCommitTrancompleted = 186;
+
             /*Transactions*/
             public const int TMRollbackTranstarting = 187;
+
             /*Transactions*/
             public const int TMRollbackTrancompleted = 188;
+
             /*Transactions*/
             public const int TMSaveTranstarting = 191;
+
             /*Transactions*/
             public const int TMSaveTrancompleted = 192;
         }
@@ -553,20 +512,28 @@ namespace ExpressProfiler
         {
             /*TSQL*/
             public const int SQLBatchCompleted = 12;
+
             /*TSQL*/
             public const int SQLBatchStarting = 13;
+
             /*TSQL*/
             public const int SQLStmtStarting = 40;
+
             /*TSQL*/
             public const int SQLStmtCompleted = 41;
+
             /*TSQL*/
             public const int PrepareSQL = 71;
+
             /*TSQL*/
             public const int ExecPreparedSQL = 72;
+
             /*TSQL*/
             public const int UnprepareSQL = 73;
+
             /*TSQL*/
             public const int SQLStmtRecompile = 166;
+
             /*TSQL*/
             public const int XQueryStaticType = 198;
         }
@@ -575,22 +542,31 @@ namespace ExpressProfiler
         {
             /*User configurable*/
             public const int UserConfigurable0 = 82;
+
             /*User configurable*/
             public const int UserConfigurable1 = 83;
+
             /*User configurable*/
             public const int UserConfigurable2 = 84;
+
             /*User configurable*/
             public const int UserConfigurable3 = 85;
+
             /*User configurable*/
             public const int UserConfigurable4 = 86;
+
             /*User configurable*/
             public const int UserConfigurable5 = 87;
+
             /*User configurable*/
             public const int UserConfigurable6 = 88;
+
             /*User configurable*/
             public const int UserConfigurable7 = 89;
+
             /*User configurable*/
             public const int UserConfigurable8 = 90;
+
             /*User configurable*/
             public const int UserConfigurable9 = 91;
         }
@@ -599,12 +575,16 @@ namespace ExpressProfiler
         {
             /*OLEDB*/
             public const int OLEDBErrors = 61;
+
             /*OLEDB*/
             public const int OLEDBCallEvent = 119;
+
             /*OLEDB*/
             public const int OLEDBQueryInterfaceEvent = 120;
+
             /*OLEDB*/
             public const int OLEDBDataReadEvent = 121;
+
             /*OLEDB*/
             public const int OLEDBProviderInformation = 194;
         }
@@ -613,28 +593,40 @@ namespace ExpressProfiler
         {
             /*Broker*/
             public const int BrokerConversation = 124;
+
             /*Broker*/
             public const int BrokerConversationGroup = 136;
+
             /*Broker*/
             public const int BrokerConnection = 138;
+
             /*Broker*/
             public const int BrokerForwardedMessageSent = 139;
+
             /*Broker*/
             public const int BrokerForwardedMessageDropped = 140;
+
             /*Broker*/
             public const int BrokerMessageClassify = 141;
+
             /*Broker*/
             public const int BrokerTransmission = 142;
+
             /*Broker*/
             public const int BrokerQueueDisabled = 143;
+
             /*Broker*/
             public const int BrokerMirroredRouteStateChanged = 144;
+
             /*Broker*/
             public const int BrokerRemoteMessageAcknowledgement = 149;
+
             /*Broker*/
             public const int BrokerMessageUndeliverable = 160;
+
             /*Broker*/
             public const int BrokerCorruptedMessage = 161;
+
             /*Broker*/
             public const int BrokerActivation = 163;
         }
@@ -643,8 +635,10 @@ namespace ExpressProfiler
         {
             /*Full text*/
             public const int FTCrawlStarted = 155;
+
             /*Full text*/
             public const int FTCrawlStopped = 156;
+
             /*Full text*/
             public const int FTCrawlAborted = 157;
         }
@@ -653,6 +647,7 @@ namespace ExpressProfiler
         {
             /*Deprecation*/
             public const int DeprecationAnnouncement = 125;
+
             /*Deprecation*/
             public const int DeprecationFinalSupport = 126;
         }
@@ -673,10 +668,13 @@ namespace ExpressProfiler
         {
             /*Query Notifications*/
             public const int QNSubscription = 199;
+
             /*Query Notifications*/
             public const int QNParametertable = 200;
+
             /*Query Notifications*/
             public const int QNTemplate = 201;
+
             /*Query Notifications*/
             public const int QNDynamics = 202;
         }
@@ -684,218 +682,17 @@ namespace ExpressProfiler
 
     public enum ProfilerColumnDataType
     {
-        Long, DateTime, Byte, Int, String, Guid
+        Long,
+        DateTime,
+        Byte,
+        Int,
+        String,
+        Guid
     }
 
 
     public static class ProfilerEventColumns
     {
-        public static readonly string[] ColumnNames =
-            {
-                "Dumy"
-                ,"TextData"
-                ,"BinaryData"
-                ,"DatabaseID"
-                ,"TransactionID"
-                ,"LineNumber"
-                ,"NTUserName"
-                ,"NTDomainName"
-                ,"HostName"
-                ,"ClientProcessID"
-                ,"ApplicationName"
-                ,"LoginName"
-                ,"SPID"
-                ,"Duration"
-                ,"StartTime"
-                ,"EndTime"
-                ,"Reads"
-                ,"Writes"
-                ,"CPU"
-                ,"Permissions"
-                ,"Severity"
-                ,"EventSubClass"
-                ,"ObjectID"
-                ,"Success"
-                ,"IndexID"
-                ,"IntegerData"
-                ,"ServerName"
-                ,"EventClass"
-                ,"ObjectType"
-                ,"NestLevel"
-                ,"State"
-                ,"Error"
-                ,"Mode"
-                ,"Handle"
-                ,"ObjectName"
-                ,"DatabaseName"
-                ,"FileName"
-                ,"OwnerName"
-                ,"RoleName"
-                ,"TargetUserName"
-                ,"DBUserName"
-                ,"LoginSid"
-                ,"TargetLoginName"
-                ,"TargetLoginSid"
-                ,"ColumnPermissions"
-                ,"LinkedServerName"
-                ,"ProviderName"
-                ,"MethodName"
-                ,"RowCounts"
-                ,"RequestID"
-                ,"XactSequence"
-                ,"EventSequence"
-                ,"BigintData1"
-                ,"BigintData2"
-                ,"GUID"
-                ,"IntegerData2"
-                ,"ObjectID2"
-                ,"Type"
-                ,"OwnerID"
-                ,"ParentName"
-                ,"IsSystem"
-                ,"Offset"
-                ,"SourceDatabaseID"
-                ,"SqlHandle"
-                ,"SessionLoginName"
-                ,"PlanHandle"
-            };
-
-        public static readonly ProfilerColumnDataType[] ProfilerColumnDataTypes =
-            {
-                /*dummy*/
-                ProfilerColumnDataType.String
-                /*TextData*/
-                ,ProfilerColumnDataType.String
-                /*BinaryData*/
-                ,ProfilerColumnDataType.Byte
-                /*DatabaseID*/
-                ,ProfilerColumnDataType.Int
-                /*TransactionID*/
-                ,ProfilerColumnDataType.Long
-                /*LineNumber*/
-                ,ProfilerColumnDataType.Int
-                /*NTUserName*/
-                ,ProfilerColumnDataType.String
-                /*NTDomainName*/
-                ,ProfilerColumnDataType.String
-                /*HostName*/
-                ,ProfilerColumnDataType.String
-                /*ClientProcessID*/
-                ,ProfilerColumnDataType.Int
-                /*ApplicationName*/
-                ,ProfilerColumnDataType.String
-                /*LoginName*/
-                ,ProfilerColumnDataType.String
-                /*SPID*/
-                ,ProfilerColumnDataType.Int
-                /*Duration*/
-                ,ProfilerColumnDataType.Long
-                /*StartTime*/
-                ,ProfilerColumnDataType.DateTime
-                /*EndTime*/
-                ,ProfilerColumnDataType.DateTime
-                /*Reads*/
-                ,ProfilerColumnDataType.Long
-                /*Writes*/
-                ,ProfilerColumnDataType.Long
-                /*CPU*/
-                ,ProfilerColumnDataType.Int
-                /*Permissions*/
-                ,ProfilerColumnDataType.Long
-                /*Severity*/
-                ,ProfilerColumnDataType.Int
-                /*EventSubClass*/
-                ,ProfilerColumnDataType.Int
-                /*ObjectID*/
-                ,ProfilerColumnDataType.Int
-                /*Success*/
-                ,ProfilerColumnDataType.Int
-                /*IndexID*/
-                ,ProfilerColumnDataType.Int
-                /*IntegerData*/
-                ,ProfilerColumnDataType.Int
-                /*ServerName*/
-                ,ProfilerColumnDataType.String
-                /*EventClass*/
-                ,ProfilerColumnDataType.Int
-                /*ObjectType*/
-                ,ProfilerColumnDataType.Int
-                /*NestLevel*/
-                ,ProfilerColumnDataType.Int
-                /*State*/
-                ,ProfilerColumnDataType.Int
-                /*Error*/
-                ,ProfilerColumnDataType.Int
-                /*Mode*/
-                ,ProfilerColumnDataType.Int
-                /*Handle*/
-                ,ProfilerColumnDataType.Int
-                /*ObjectName*/
-                ,ProfilerColumnDataType.String
-                /*DatabaseName*/
-                ,ProfilerColumnDataType.String
-                /*FileName*/
-                ,ProfilerColumnDataType.String
-                /*OwnerName*/
-                ,ProfilerColumnDataType.String
-                /*RoleName*/
-                ,ProfilerColumnDataType.String
-                /*TargetUserName*/
-                ,ProfilerColumnDataType.String
-                /*DBUserName*/
-                ,ProfilerColumnDataType.String
-                /*LoginSid*/
-                ,ProfilerColumnDataType.Byte
-                /*TargetLoginName*/
-                ,ProfilerColumnDataType.String
-                /*TargetLoginSid*/
-                ,ProfilerColumnDataType.Byte
-                /*ColumnPermissions*/
-                ,ProfilerColumnDataType.Int
-                /*LinkedServerName*/
-                ,ProfilerColumnDataType.String
-                /*ProviderName*/
-                ,ProfilerColumnDataType.String
-                /*MethodName*/
-                ,ProfilerColumnDataType.String
-                /*RowCounts*/
-                ,ProfilerColumnDataType.Long
-                /*RequestID*/
-                ,ProfilerColumnDataType.Int
-                /*XactSequence*/
-                ,ProfilerColumnDataType.Long
-                /*EventSequence*/
-                ,ProfilerColumnDataType.Long
-                /*BigintData1*/
-                ,ProfilerColumnDataType.Long
-                /*BigintData2*/
-                ,ProfilerColumnDataType.Long
-                /*GUID*/
-                ,ProfilerColumnDataType.Guid
-                /*IntegerData2*/
-                ,ProfilerColumnDataType.Int
-                /*ObjectID2*/
-                ,ProfilerColumnDataType.Long
-                /*Type*/
-                ,ProfilerColumnDataType.Int
-                /*OwnerID*/
-                ,ProfilerColumnDataType.Int
-                /*ParentName*/
-                ,ProfilerColumnDataType.String
-                /*IsSystem*/
-                ,ProfilerColumnDataType.Int
-                /*Offset*/
-                ,ProfilerColumnDataType.Int
-                /*SourceDatabaseID*/
-                ,ProfilerColumnDataType.Int
-                /*SqlHandle*/
-                ,ProfilerColumnDataType.Byte
-                /*SessionLoginName*/
-                ,ProfilerColumnDataType.String
-                /*PlanHandle*/
-                ,ProfilerColumnDataType.Byte
-            };
-
         /*
         select 'public const int '+Name + '= '+cast(trace_column_id as varchar)+';'
         from sys.trace_columns
@@ -966,13 +763,162 @@ namespace ExpressProfiler
         public const int SqlHandle = 63;
         public const int SessionLoginName = 64;
         public const int PlanHandle = 65;
+
+        public static readonly string[] ColumnNames =
+        {
+            "Dumy", "TextData", "BinaryData", "DatabaseID", "TransactionID", "LineNumber", "NTUserName", "NTDomainName",
+            "HostName", "ClientProcessID", "ApplicationName", "LoginName", "SPID", "Duration", "StartTime", "EndTime",
+            "Reads", "Writes", "CPU", "Permissions", "Severity", "EventSubClass", "ObjectID", "Success", "IndexID",
+            "IntegerData", "ServerName", "EventClass", "ObjectType", "NestLevel", "State", "Error", "Mode", "Handle",
+            "ObjectName", "DatabaseName", "FileName", "OwnerName", "RoleName", "TargetUserName", "DBUserName",
+            "LoginSid", "TargetLoginName", "TargetLoginSid", "ColumnPermissions", "LinkedServerName", "ProviderName",
+            "MethodName", "RowCounts", "RequestID", "XactSequence", "EventSequence", "BigintData1", "BigintData2",
+            "GUID", "IntegerData2", "ObjectID2", "Type", "OwnerID", "ParentName", "IsSystem", "Offset",
+            "SourceDatabaseID", "SqlHandle", "SessionLoginName", "PlanHandle"
+        };
+
+        public static readonly ProfilerColumnDataType[] ProfilerColumnDataTypes =
+        {
+            /*dummy*/
+            ProfilerColumnDataType.String
+            /*TextData*/,
+            ProfilerColumnDataType.String
+            /*BinaryData*/,
+            ProfilerColumnDataType.Byte
+            /*DatabaseID*/,
+            ProfilerColumnDataType.Int
+            /*TransactionID*/,
+            ProfilerColumnDataType.Long
+            /*LineNumber*/,
+            ProfilerColumnDataType.Int
+            /*NTUserName*/,
+            ProfilerColumnDataType.String
+            /*NTDomainName*/,
+            ProfilerColumnDataType.String
+            /*HostName*/,
+            ProfilerColumnDataType.String
+            /*ClientProcessID*/,
+            ProfilerColumnDataType.Int
+            /*ApplicationName*/,
+            ProfilerColumnDataType.String
+            /*LoginName*/,
+            ProfilerColumnDataType.String
+            /*SPID*/,
+            ProfilerColumnDataType.Int
+            /*Duration*/,
+            ProfilerColumnDataType.Long
+            /*StartTime*/,
+            ProfilerColumnDataType.DateTime
+            /*EndTime*/,
+            ProfilerColumnDataType.DateTime
+            /*Reads*/,
+            ProfilerColumnDataType.Long
+            /*Writes*/,
+            ProfilerColumnDataType.Long
+            /*CPU*/,
+            ProfilerColumnDataType.Int
+            /*Permissions*/,
+            ProfilerColumnDataType.Long
+            /*Severity*/,
+            ProfilerColumnDataType.Int
+            /*EventSubClass*/,
+            ProfilerColumnDataType.Int
+            /*ObjectID*/,
+            ProfilerColumnDataType.Int
+            /*Success*/,
+            ProfilerColumnDataType.Int
+            /*IndexID*/,
+            ProfilerColumnDataType.Int
+            /*IntegerData*/,
+            ProfilerColumnDataType.Int
+            /*ServerName*/,
+            ProfilerColumnDataType.String
+            /*EventClass*/,
+            ProfilerColumnDataType.Int
+            /*ObjectType*/,
+            ProfilerColumnDataType.Int
+            /*NestLevel*/,
+            ProfilerColumnDataType.Int
+            /*State*/,
+            ProfilerColumnDataType.Int
+            /*Error*/,
+            ProfilerColumnDataType.Int
+            /*Mode*/,
+            ProfilerColumnDataType.Int
+            /*Handle*/,
+            ProfilerColumnDataType.Int
+            /*ObjectName*/,
+            ProfilerColumnDataType.String
+            /*DatabaseName*/,
+            ProfilerColumnDataType.String
+            /*FileName*/,
+            ProfilerColumnDataType.String
+            /*OwnerName*/,
+            ProfilerColumnDataType.String
+            /*RoleName*/,
+            ProfilerColumnDataType.String
+            /*TargetUserName*/,
+            ProfilerColumnDataType.String
+            /*DBUserName*/,
+            ProfilerColumnDataType.String
+            /*LoginSid*/,
+            ProfilerColumnDataType.Byte
+            /*TargetLoginName*/,
+            ProfilerColumnDataType.String
+            /*TargetLoginSid*/,
+            ProfilerColumnDataType.Byte
+            /*ColumnPermissions*/,
+            ProfilerColumnDataType.Int
+            /*LinkedServerName*/,
+            ProfilerColumnDataType.String
+            /*ProviderName*/,
+            ProfilerColumnDataType.String
+            /*MethodName*/,
+            ProfilerColumnDataType.String
+            /*RowCounts*/,
+            ProfilerColumnDataType.Long
+            /*RequestID*/,
+            ProfilerColumnDataType.Int
+            /*XactSequence*/,
+            ProfilerColumnDataType.Long
+            /*EventSequence*/,
+            ProfilerColumnDataType.Long
+            /*BigintData1*/,
+            ProfilerColumnDataType.Long
+            /*BigintData2*/,
+            ProfilerColumnDataType.Long
+            /*GUID*/,
+            ProfilerColumnDataType.Guid
+            /*IntegerData2*/,
+            ProfilerColumnDataType.Int
+            /*ObjectID2*/,
+            ProfilerColumnDataType.Long
+            /*Type*/,
+            ProfilerColumnDataType.Int
+            /*OwnerID*/,
+            ProfilerColumnDataType.Int
+            /*ParentName*/,
+            ProfilerColumnDataType.String
+            /*IsSystem*/,
+            ProfilerColumnDataType.Int
+            /*Offset*/,
+            ProfilerColumnDataType.Int
+            /*SourceDatabaseID*/,
+            ProfilerColumnDataType.Int
+            /*SqlHandle*/,
+            ProfilerColumnDataType.Byte
+            /*SessionLoginName*/,
+            ProfilerColumnDataType.String
+            /*PlanHandle*/,
+            ProfilerColumnDataType.Byte
+        };
     }
     // ReSharper restore UnusedMember.Global
     // ReSharper restore InconsistentNaming
 
     public class ProfilerEvent
     {
-        internal readonly Object[] m_Events = new object[65];
+        internal readonly object[] m_Events = new object[65];
         internal ulong m_ColumnMask;
         // ReSharper disable UnusedMember.Global
         // ReSharper disable InconsistentNaming
@@ -1007,8 +953,8 @@ order by Type_Name,trace_column_id
                 case ProfilerColumnDataType.Long:
                     return GetLong(idx).ToString(format);
                 case ProfilerColumnDataType.DateTime:
-                    DateTime d = GetDateTime(idx);
-                    return 1==d.Year?"": d.ToString(format);
+                    var d = GetDateTime(idx);
+                    return 1 == d.Year ? "" : d.ToString(format);
                 case ProfilerColumnDataType.Byte:
                     return GetByte(idx).ToString();
                 case ProfilerColumnDataType.Int:
@@ -1018,30 +964,31 @@ order by Type_Name,trace_column_id
                 case ProfilerColumnDataType.Guid:
                     return GetGuid(idx).ToString();
             }
+
             return null;
         }
 
         private int GetInt(int idx)
         {
             if (!ColumnIsSet(idx)) return 0;
-            return m_Events[idx] == null ? 0 : (int)m_Events[idx];
+            return m_Events[idx] == null ? 0 : (int) m_Events[idx];
         }
 
         private long GetLong(int idx)
         {
             if (!ColumnIsSet(idx)) return 0;
-            return m_Events[idx] == null ? 0 : (long)m_Events[idx];
+            return m_Events[idx] == null ? 0 : (long) m_Events[idx];
         }
 
         private string GetString(int idx)
         {
             if (!ColumnIsSet(idx)) return "";
-            return m_Events[idx] == null ? "" : (string)m_Events[idx];
+            return m_Events[idx] == null ? "" : (string) m_Events[idx];
         }
 
-        private  byte[] GetByte(int idx)
+        private byte[] GetByte(int idx)
         {
-            return ColumnIsSet(idx)?(byte[])m_Events[idx]:new byte[1];
+            return ColumnIsSet(idx) ? (byte[]) m_Events[idx] : new byte[1];
         }
 
         private DateTime GetDateTime(int idx)
@@ -1089,109 +1036,85 @@ order by trace_column_id
          * 
          */
 
-        public string TextData { get { return GetString(ProfilerEventColumns.TextData); } }
-        public byte[] BinaryData { get { return GetByte(ProfilerEventColumns.BinaryData); } }
-        public int DatabaseID { get { return GetInt(ProfilerEventColumns.DatabaseID); } }
-        public long TransactionID { get { return GetLong(ProfilerEventColumns.TransactionID); } }
-        public int LineNumber { get { return GetInt(ProfilerEventColumns.LineNumber); } }
-        public string NTUserName { get { return GetString(ProfilerEventColumns.NTUserName); } }
-        public string NTDomainName { get { return GetString(ProfilerEventColumns.NTDomainName); } }
-        public string HostName { get { return GetString(ProfilerEventColumns.HostName); } }
-        public int ClientProcessID { get { return GetInt(ProfilerEventColumns.ClientProcessID); } }
-        public string ApplicationName { get { return GetString(ProfilerEventColumns.ApplicationName); } }
-        public string LoginName { get { return GetString(ProfilerEventColumns.LoginName); } }
-        public int SPID { get { return GetInt(ProfilerEventColumns.SPID); } }
-        public long Duration { get { return GetLong(ProfilerEventColumns.Duration); } }
-        public DateTime StartTime { get { return GetDateTime(ProfilerEventColumns.StartTime); } }
-        public DateTime EndTime { get { return GetDateTime(ProfilerEventColumns.EndTime); } }
-        public long Reads { get { return GetLong(ProfilerEventColumns.Reads); } }
-        public long Writes { get { return GetLong(ProfilerEventColumns.Writes); } }
-        public int CPU { get { return GetInt(ProfilerEventColumns.CPU); } }
-        public long Permissions { get { return GetLong(ProfilerEventColumns.Permissions); } }
-        public int Severity { get { return GetInt(ProfilerEventColumns.Severity); } }
-        public int EventSubClass { get { return GetInt(ProfilerEventColumns.EventSubClass); } }
-        public int ObjectID { get { return GetInt(ProfilerEventColumns.ObjectID); } }
-        public int Success { get { return GetInt(ProfilerEventColumns.Success); } }
-        public int IndexID { get { return GetInt(ProfilerEventColumns.IndexID); } }
-        public int IntegerData { get { return GetInt(ProfilerEventColumns.IntegerData); } }
-        public string ServerName { get { return GetString(ProfilerEventColumns.ServerName); } }
-        public int EventClass { get { return GetInt(ProfilerEventColumns.EventClass); } }
-        public int ObjectType { get { return GetInt(ProfilerEventColumns.ObjectType); } }
-        public int NestLevel { get { return GetInt(ProfilerEventColumns.NestLevel); } }
-        public int State { get { return GetInt(ProfilerEventColumns.State); } }
-        public int Error { get { return GetInt(ProfilerEventColumns.Error); } }
-        public int Mode { get { return GetInt(ProfilerEventColumns.Mode); } }
-        public int Handle { get { return GetInt(ProfilerEventColumns.Handle); } }
-        public string ObjectName { get { return GetString(ProfilerEventColumns.ObjectName); } }
-        public string DatabaseName { get { return GetString(ProfilerEventColumns.DatabaseName); } }
-        public string FileName { get { return GetString(ProfilerEventColumns.FileName); } }
-        public string OwnerName { get { return GetString(ProfilerEventColumns.OwnerName); } }
-        public string RoleName { get { return GetString(ProfilerEventColumns.RoleName); } }
-        public string TargetUserName { get { return GetString(ProfilerEventColumns.TargetUserName); } }
-        public string DBUserName { get { return GetString(ProfilerEventColumns.DBUserName); } }
-        public byte[] LoginSid { get { return GetByte(ProfilerEventColumns.LoginSid); } }
-        public string TargetLoginName { get { return GetString(ProfilerEventColumns.TargetLoginName); } }
-        public byte[] TargetLoginSid { get { return GetByte(ProfilerEventColumns.TargetLoginSid); } }
-        public int ColumnPermissions { get { return GetInt(ProfilerEventColumns.ColumnPermissions); } }
-        public string LinkedServerName { get { return GetString(ProfilerEventColumns.LinkedServerName); } }
-        public string ProviderName { get { return GetString(ProfilerEventColumns.ProviderName); } }
-        public string MethodName { get { return GetString(ProfilerEventColumns.MethodName); } }
-        public long RowCounts { get { return GetLong(ProfilerEventColumns.RowCounts); } }
-        public int RequestID { get { return GetInt(ProfilerEventColumns.RequestID); } }
-        public long XactSequence { get { return GetLong(ProfilerEventColumns.XactSequence); } }
-        public long EventSequence { get { return GetLong(ProfilerEventColumns.EventSequence); } }
-        public long BigintData1 { get { return GetLong(ProfilerEventColumns.BigintData1); } }
-        public long BigintData2 { get { return GetLong(ProfilerEventColumns.BigintData2); } }
-        public Guid GUID { get { return GetGuid(ProfilerEventColumns.GUID); } }
-        public int IntegerData2 { get { return GetInt(ProfilerEventColumns.IntegerData2); } }
-        public long ObjectID2 { get { return GetLong(ProfilerEventColumns.ObjectID2); } }
-        public int Type { get { return GetInt(ProfilerEventColumns.Type); } }
-        public int OwnerID { get { return GetInt(ProfilerEventColumns.OwnerID); } }
-        public string ParentName { get { return GetString(ProfilerEventColumns.ParentName); } }
-        public int IsSystem { get { return GetInt(ProfilerEventColumns.IsSystem); } }
-        public int Offset { get { return GetInt(ProfilerEventColumns.Offset); } }
-        public int SourceDatabaseID { get { return GetInt(ProfilerEventColumns.SourceDatabaseID); } }
-        public byte[] SqlHandle { get { return GetByte(ProfilerEventColumns.SqlHandle); } }
-        public string SessionLoginName { get { return GetString(ProfilerEventColumns.SessionLoginName); } }
-        public byte[] PlanHandle { get { return GetByte(ProfilerEventColumns.PlanHandle); } }
+        public string TextData => GetString(ProfilerEventColumns.TextData);
+        public byte[] BinaryData => GetByte(ProfilerEventColumns.BinaryData);
+        public int DatabaseID => GetInt(ProfilerEventColumns.DatabaseID);
+        public long TransactionID => GetLong(ProfilerEventColumns.TransactionID);
+        public int LineNumber => GetInt(ProfilerEventColumns.LineNumber);
+        public string NTUserName => GetString(ProfilerEventColumns.NTUserName);
+        public string NTDomainName => GetString(ProfilerEventColumns.NTDomainName);
+        public string HostName => GetString(ProfilerEventColumns.HostName);
+        public int ClientProcessID => GetInt(ProfilerEventColumns.ClientProcessID);
+        public string ApplicationName => GetString(ProfilerEventColumns.ApplicationName);
+        public string LoginName => GetString(ProfilerEventColumns.LoginName);
+        public int SPID => GetInt(ProfilerEventColumns.SPID);
+        public long Duration => GetLong(ProfilerEventColumns.Duration);
+        public DateTime StartTime => GetDateTime(ProfilerEventColumns.StartTime);
+        public DateTime EndTime => GetDateTime(ProfilerEventColumns.EndTime);
+        public long Reads => GetLong(ProfilerEventColumns.Reads);
+        public long Writes => GetLong(ProfilerEventColumns.Writes);
+        public int CPU => GetInt(ProfilerEventColumns.CPU);
+        public long Permissions => GetLong(ProfilerEventColumns.Permissions);
+        public int Severity => GetInt(ProfilerEventColumns.Severity);
+        public int EventSubClass => GetInt(ProfilerEventColumns.EventSubClass);
+        public int ObjectID => GetInt(ProfilerEventColumns.ObjectID);
+        public int Success => GetInt(ProfilerEventColumns.Success);
+        public int IndexID => GetInt(ProfilerEventColumns.IndexID);
+        public int IntegerData => GetInt(ProfilerEventColumns.IntegerData);
+        public string ServerName => GetString(ProfilerEventColumns.ServerName);
+        public int EventClass => GetInt(ProfilerEventColumns.EventClass);
+        public int ObjectType => GetInt(ProfilerEventColumns.ObjectType);
+        public int NestLevel => GetInt(ProfilerEventColumns.NestLevel);
+        public int State => GetInt(ProfilerEventColumns.State);
+        public int Error => GetInt(ProfilerEventColumns.Error);
+        public int Mode => GetInt(ProfilerEventColumns.Mode);
+        public int Handle => GetInt(ProfilerEventColumns.Handle);
+        public string ObjectName => GetString(ProfilerEventColumns.ObjectName);
+        public string DatabaseName => GetString(ProfilerEventColumns.DatabaseName);
+        public string FileName => GetString(ProfilerEventColumns.FileName);
+        public string OwnerName => GetString(ProfilerEventColumns.OwnerName);
+        public string RoleName => GetString(ProfilerEventColumns.RoleName);
+        public string TargetUserName => GetString(ProfilerEventColumns.TargetUserName);
+        public string DBUserName => GetString(ProfilerEventColumns.DBUserName);
+        public byte[] LoginSid => GetByte(ProfilerEventColumns.LoginSid);
+        public string TargetLoginName => GetString(ProfilerEventColumns.TargetLoginName);
+        public byte[] TargetLoginSid => GetByte(ProfilerEventColumns.TargetLoginSid);
+        public int ColumnPermissions => GetInt(ProfilerEventColumns.ColumnPermissions);
+        public string LinkedServerName => GetString(ProfilerEventColumns.LinkedServerName);
+        public string ProviderName => GetString(ProfilerEventColumns.ProviderName);
+        public string MethodName => GetString(ProfilerEventColumns.MethodName);
+        public long RowCounts => GetLong(ProfilerEventColumns.RowCounts);
+        public int RequestID => GetInt(ProfilerEventColumns.RequestID);
+        public long XactSequence => GetLong(ProfilerEventColumns.XactSequence);
+        public long EventSequence => GetLong(ProfilerEventColumns.EventSequence);
+        public long BigintData1 => GetLong(ProfilerEventColumns.BigintData1);
+        public long BigintData2 => GetLong(ProfilerEventColumns.BigintData2);
+        public Guid GUID => GetGuid(ProfilerEventColumns.GUID);
+        public int IntegerData2 => GetInt(ProfilerEventColumns.IntegerData2);
+        public long ObjectID2 => GetLong(ProfilerEventColumns.ObjectID2);
+        public int Type => GetInt(ProfilerEventColumns.Type);
+        public int OwnerID => GetInt(ProfilerEventColumns.OwnerID);
+        public string ParentName => GetString(ProfilerEventColumns.ParentName);
+        public int IsSystem => GetInt(ProfilerEventColumns.IsSystem);
+        public int Offset => GetInt(ProfilerEventColumns.Offset);
+        public int SourceDatabaseID => GetInt(ProfilerEventColumns.SourceDatabaseID);
+        public byte[] SqlHandle => GetByte(ProfilerEventColumns.SqlHandle);
+        public string SessionLoginName => GetString(ProfilerEventColumns.SessionLoginName);
+        public byte[] PlanHandle => GetByte(ProfilerEventColumns.PlanHandle);
     }
     // ReSharper restore InconsistentNaming
     // ReSharper restore UnusedMember.Global
 
     public class RawTraceReader
     {
-        private delegate void SetEventDelegate(ProfilerEvent evt, int columnid);
-        private DbDataReader m_Reader;
         private readonly byte[] m_B16 = new byte[16];
-        private readonly byte[] m_B8 = new byte[8];
         private readonly byte[] m_B2 = new byte[2];
         private readonly byte[] m_B4 = new byte[4];
+        private readonly byte[] m_B8 = new byte[8];
         private readonly SqlConnection m_Conn;
-        private int m_TraceId;
-        public int TraceId
-        {
-            get { return m_TraceId; }
-        }
-        readonly SetEventDelegate[] m_Delegates = new SetEventDelegate[66];
-        private bool m_LastRead;
-        private bool Read()
-        {
-            m_LastRead = m_Reader.Read();
-            return m_LastRead;
-        }
 
-        public bool TraceIsActive
-        {
-            get
-            {
-                return m_LastRead;
-            }
-        }
-        public void Close()
-        {
-            if(m_Reader!=null){m_Reader.Close();}
-            m_LastRead = false;
-        }
+        private readonly SetEventDelegate[] m_Delegates = new SetEventDelegate[66];
+        private DbDataReader m_Reader;
 
         public RawTraceReader(SqlConnection con)
         {
@@ -1283,7 +1206,22 @@ order by trace_column_id
             m_Delegates[ProfilerEventColumns.SqlHandle] = evtByte;
             m_Delegates[ProfilerEventColumns.SessionLoginName] = evtString;
             m_Delegates[ProfilerEventColumns.PlanHandle] = evtByte;
+        }
 
+        public int TraceId { get; private set; }
+
+        public bool TraceIsActive { get; private set; }
+
+        private bool Read()
+        {
+            TraceIsActive = m_Reader.Read();
+            return TraceIsActive;
+        }
+
+        public void Close()
+        {
+            m_Reader?.Close();
+            TraceIsActive = false;
         }
 
         private static void SetGuidColumn(ProfilerEvent evt, int columnid)
@@ -1302,28 +1240,27 @@ order by trace_column_id
             //2 byte - sec
             //2 byte - msec
             m_Reader.GetBytes(2, 0, m_B16, 0, 16);
-            int year = m_B16[0]|m_B16[1]<<8;
-            int month = m_B16[2] | m_B16[3] << 8;
-            int day = m_B16[6] | m_B16[7] << 8;
-            int hour = m_B16[8] | m_B16[9] << 8;
-            int min = m_B16[10] | m_B16[11] << 8;
-            int sec = m_B16[12] | m_B16[13] << 8;
-            int msec = m_B16[14] | m_B16[15] << 8;
-            evt.m_Events[columnid] = new DateTime(year,month,day,hour,min,sec,msec);
-            evt.m_ColumnMask |= (ulong)1 << columnid;
-
+            var year = m_B16[0] | (m_B16[1] << 8);
+            var month = m_B16[2] | (m_B16[3] << 8);
+            var day = m_B16[6] | (m_B16[7] << 8);
+            var hour = m_B16[8] | (m_B16[9] << 8);
+            var min = m_B16[10] | (m_B16[11] << 8);
+            var sec = m_B16[12] | (m_B16[13] << 8);
+            var msec = m_B16[14] | (m_B16[15] << 8);
+            evt.m_Events[columnid] = new DateTime(year, month, day, hour, min, sec, msec);
+            evt.m_ColumnMask |= (ulong) 1 << columnid;
         }
 
         private void SetByteColumn(ProfilerEvent evt, int columnid)
         {
-            byte[] b = new byte[(int)m_Reader[1]];
+            var b = new byte[(int) m_Reader[1]];
             evt.m_Events[columnid] = b;
             evt.m_ColumnMask |= 1UL << columnid;
         }
 
         private void SetStringColumn(ProfilerEvent evt, int columnid)
         {
-            evt.m_Events[columnid] = Encoding.Unicode.GetString((byte[])m_Reader[2]);
+            evt.m_Events[columnid] = Encoding.Unicode.GetString((byte[]) m_Reader[2]);
             evt.m_ColumnMask |= 1UL << columnid;
         }
 
@@ -1343,39 +1280,40 @@ order by trace_column_id
 
         private static long ToInt64(byte[] value)
         {
-            int i1 = (value[0]) | (value[1] << 8) | (value[2] << 16) | (value[3] << 24);
-            int i2 = (value[4]) | (value[5] << 8) | (value[6] << 16) | (value[7] << 24);
-            return (uint)i1 | ((long)i2 << 32);
+            var i1 = value[0] | (value[1] << 8) | (value[2] << 16) | (value[3] << 24);
+            var i2 = value[4] | (value[5] << 8) | (value[6] << 16) | (value[7] << 24);
+            return (uint) i1 | ((long) i2 << 32);
         }
+
         private static int ToInt32(byte[] value)
         {
-            return (value[0]) | (value[1] << 8) | (value[2] << 16) | (value[3] << 24);
+            return value[0] | (value[1] << 8) | (value[2] << 16) | (value[3] << 24);
         }
+
         private static int ToInt16(byte[] value)
         {
-            return (value[0]) | (value[1] << 8);
+            return value[0] | (value[1] << 8);
         }
 
 // ReSharper disable UnusedMember.Global
         public static string BuildEventSql(int traceid, int eventId, params int[] columns)
 // ReSharper restore UnusedMember.Global
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (int i in columns)
-            {
+            var sb = new StringBuilder();
+            foreach (var i in columns)
                 sb.AppendFormat("\r\n exec sp_trace_setevent {0}, {1}, {2}, @on", traceid, eventId, i);
-            }
             return sb.ToString();
         }
 
         public void SetEvent(int eventId, params int[] columns)
         {
-            SqlCommand cmd = new SqlCommand{Connection = m_Conn,CommandText = "sp_trace_setevent",CommandType = CommandType.StoredProcedure};
-            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = m_TraceId;
+            var cmd = new SqlCommand
+                {Connection = m_Conn, CommandText = "sp_trace_setevent", CommandType = CommandType.StoredProcedure};
+            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = TraceId;
             cmd.Parameters.Add("@eventid", SqlDbType.Int).Value = eventId;
-            SqlParameter p = cmd.Parameters.Add("@columnid", SqlDbType.Int);
+            var p = cmd.Parameters.Add("@columnid", SqlDbType.Int);
             cmd.Parameters.Add("@on", SqlDbType.Bit).Value = 1;
-            foreach (int i in columns)
+            foreach (var i in columns)
             {
                 p.Value = i;
                 cmd.ExecuteNonQuery();
@@ -1383,20 +1321,18 @@ order by trace_column_id
         }
 
 // ReSharper disable UnusedMember.Global
-        public void SetFilter(int columnId, int logicalOperator,int comparisonOperator,long? value)
+        public void SetFilter(int columnId, int logicalOperator, int comparisonOperator, long? value)
 // ReSharper restore UnusedMember.Global
         {
-            SqlCommand cmd = new SqlCommand { Connection = m_Conn, CommandText = "sp_trace_setfilter", CommandType = CommandType.StoredProcedure };
-            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = m_TraceId;
+            var cmd = new SqlCommand
+                {Connection = m_Conn, CommandText = "sp_trace_setfilter", CommandType = CommandType.StoredProcedure};
+            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = TraceId;
             cmd.Parameters.Add("@columnid", SqlDbType.Int).Value = columnId;
             cmd.Parameters.Add("@logical_operator", SqlDbType.Int).Value = logicalOperator;
             cmd.Parameters.Add("@comparison_operator", SqlDbType.Int).Value = comparisonOperator;
             if (value == null)
-            {
                 cmd.Parameters.Add("@value", SqlDbType.Int).Value = DBNull.Value;
-            }
             else
-            {
                 switch (columnId)
                 {
                     case ProfilerEventColumns.BigintData1:
@@ -1441,75 +1377,80 @@ order by trace_column_id
                         cmd.Parameters.Add("@value", SqlDbType.Int).Value = value;
                         break;
                     default:
-                        throw new Exception(String.Format("Unsupported column_id: {0}",columnId));
+                        throw new Exception($"Unsupported column_id: {columnId}");
                 }
-            }
             cmd.ExecuteNonQuery();
         }
 
         public void SetFilter(int columnId, int logicalOperator, int comparisonOperator, string value)
         {
-            SqlCommand cmd = new SqlCommand { Connection = m_Conn, CommandText = "sp_trace_setfilter", CommandType = CommandType.StoredProcedure };
-            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = m_TraceId;
+            var cmd = new SqlCommand
+                {Connection = m_Conn, CommandText = "sp_trace_setfilter", CommandType = CommandType.StoredProcedure};
+            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = TraceId;
             cmd.Parameters.Add("@columnid", SqlDbType.Int).Value = columnId;
             cmd.Parameters.Add("@logical_operator", SqlDbType.Int).Value = logicalOperator;
             cmd.Parameters.Add("@comparison_operator", SqlDbType.Int).Value = comparisonOperator;
             if (value == null)
-            {
                 cmd.Parameters.Add("@value", SqlDbType.NVarChar).Value = DBNull.Value;
-            }
             else
-            {
-                cmd.Parameters.Add("@value", SqlDbType.NVarChar,value.Length).Value = value;
-            }
+                cmd.Parameters.Add("@value", SqlDbType.NVarChar, value.Length).Value = value;
             cmd.ExecuteNonQuery();
         }
 
 
         public void CreateTrace()
         {
-            SqlCommand cmd = new SqlCommand { Connection = m_Conn, CommandText = "sp_trace_create", CommandType = CommandType.StoredProcedure };
+            var cmd = new SqlCommand
+                {Connection = m_Conn, CommandText = "sp_trace_create", CommandType = CommandType.StoredProcedure};
             cmd.Parameters.Add("@traceid", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@options", SqlDbType.Int).Value = 1;
-            cmd.Parameters.Add("@trace_file", SqlDbType.NVarChar, 245).Value=DBNull.Value;
+            cmd.Parameters.Add("@trace_file", SqlDbType.NVarChar, 245).Value = DBNull.Value;
             cmd.Parameters.Add("@maxfilesize", SqlDbType.BigInt).Value = DBNull.Value;
             cmd.Parameters.Add("@stoptime", SqlDbType.DateTime).Value = DBNull.Value;
             cmd.Parameters.Add("@filecount", SqlDbType.Int).Value = DBNull.Value;
             cmd.Parameters.Add("@result", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
             cmd.ExecuteNonQuery();
-            int result = (int)cmd.Parameters["@result"].Value;
-            m_TraceId = result != 0 ? -result : (int)cmd.Parameters["@traceid"].Value;
+            var result = (int) cmd.Parameters["@result"].Value;
+            TraceId = result != 0 ? -result : (int) cmd.Parameters["@traceid"].Value;
         }
 
-        private void ControlTrace(SqlConnection con,int status)
+        private void ControlTrace(SqlConnection con, int status)
         {
-            SqlCommand cmd = new SqlCommand { Connection = con, CommandText = "sp_trace_setstatus", CommandType = CommandType.StoredProcedure,CommandTimeout = 0};
-            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = m_TraceId;
+            var cmd = new SqlCommand
+            {
+                Connection = con, CommandText = "sp_trace_setstatus", CommandType = CommandType.StoredProcedure,
+                CommandTimeout = 0
+            };
+            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = TraceId;
             cmd.Parameters.Add("@status", SqlDbType.Int).Value = status;
             cmd.ExecuteNonQuery();
         }
 
         public void CloseTrace(SqlConnection con)
         {
-            ControlTrace(con,2);
+            ControlTrace(con, 2);
         }
 
         public void StopTrace(SqlConnection con)
         {
-            ControlTrace(con,0);
+            ControlTrace(con, 0);
         }
 
         public void StartTrace()
         {
-            ControlTrace(m_Conn,1);
+            ControlTrace(m_Conn, 1);
             GetReader();
             Read();
         }
 
         private void GetReader()
         {
-            SqlCommand cmd = new SqlCommand { Connection = m_Conn, CommandText = "sp_trace_getdata", CommandType = CommandType.StoredProcedure,CommandTimeout = 0};
-            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = m_TraceId;
+            var cmd = new SqlCommand
+            {
+                Connection = m_Conn, CommandText = "sp_trace_getdata", CommandType = CommandType.StoredProcedure,
+                CommandTimeout = 0
+            };
+            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = TraceId;
             cmd.Parameters.Add("@records", SqlDbType.Int).Value = 0;
             m_Reader = cmd.ExecuteReader(CommandBehavior.SingleResult);
         }
@@ -1517,35 +1458,34 @@ order by trace_column_id
         public ProfilerEvent Next()
         {
             if (!TraceIsActive) return null;
-            int columnid = (int)m_Reader[0];
+            var columnid = (int) m_Reader[0];
             //skip to begin of new event
-            while (columnid != 65526 && Read() && TraceIsActive)
-            {
-                columnid = (int)m_Reader[0];
-            }
+            while (columnid != 65526 && Read() && TraceIsActive) columnid = (int) m_Reader[0];
             //start of new event
             if (columnid != 65526) return null;
             if (!TraceIsActive) return null;
             //get potential event class
             m_Reader.GetBytes(2, 0, m_B2, 0, 2);
-            int eventClass = ToInt16(m_B2);
+            var eventClass = ToInt16(m_B2);
 
             //we got new event
             if (eventClass >= 0 && eventClass < 255)
             {
-                ProfilerEvent evt = new ProfilerEvent();
+                var evt = new ProfilerEvent();
                 evt.m_Events[27] = eventClass;
                 evt.m_ColumnMask |= 1 << 27;
                 while (Read())
                 {
-                    columnid = (int)m_Reader[0];
+                    columnid = (int) m_Reader[0];
                     if (columnid > 64) return evt;
                     m_Delegates[columnid](evt, columnid);
                 }
             }
+
             Read();
             return null;
         }
 
+        private delegate void SetEventDelegate(ProfilerEvent evt, int columnid);
     }
 }

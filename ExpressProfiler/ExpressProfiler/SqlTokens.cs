@@ -1,13 +1,19 @@
 ﻿//Traceutils assembly
 //writen by Locky, 2009. 
+
+#region usings
+
 using System.Collections.Generic;
 using System.Text;
 
+#endregion
+
 namespace ExpressProfiler
 {
-    class Sqltokens
+    internal class Sqltokens
     {
         #region Keywords
+
         private const string Keywords = "ADD,ALTER,AS,ASC,AUTHORIZATION,BACKUP," +
                                         "BEGIN,BREAK,BROWSE,BULK,BY,CASCADE," +
                                         "CHECK,CHECKPOINT,CLOSE,CLUSTERED,COLLATE," +
@@ -47,7 +53,9 @@ namespace ExpressProfiler
                                         + ",delay";
 
         #endregion
+
         #region Functions
+
         private const string Functions = "@@CONNECTIONS,@@CPU_BUSY,@@CURSOR_ROWS,@@DATEFIRST,@@DBTS,@@ERROR," +
                                          "@@FETCH_STATUS,@@IDENTITY,@@IDLE,@@IO_BUSY,@@LANGID,@@LANGUAGE," +
                                          "@@LOCK_TIMEOUT,@@MAX_CONNECTIONS,@@MAX_PRECISION,@@NESTLEVEL,@@OPTIONS," +
@@ -77,37 +85,26 @@ namespace ExpressProfiler
                                          "USER_ID,USER_NAME,VAR,VARP,YEAR";
 
         #endregion
+
         #region Types
+
         private const string Types = "bigint,binary,bit,char,character,datetime," +
                                      "dec,decimal,float,image,int," +
                                      "integer,money,nchar,ntext,nvarchar,real," +
                                      "rowversion,smalldatetime,smallint,smallmoney," +
                                      "sql_variant,sysname,text,timestamp,tinyint,uniqueidentifier," +
                                      "varbinary,varchar,NUMERIC";
+
         #endregion
+
         private const string Greykeywords = "AND,EXISTS,ALL,ANY,BETWEEN,IN,SOME,JOIN,CROSS,OR,NULL,OUTER,NOT,LIKE";
-        private const string Fukeywords = "CASE,RIGHT,COALESCE,SESSION_USER,CONVERT,SYSTEM_USER,LEFT,CURRENT_TIMESTAMP,CURRENT_USER,NULLIF,USER";
-        private readonly Dictionary<string, YukonLexer.TokenKind> m_Words = new Dictionary<string, YukonLexer.TokenKind>();
-        public YukonLexer.TokenKind this[string token] { get { token = token.ToLower(); return m_Words.ContainsKey(token) ? m_Words[token] : YukonLexer.TokenKind.tkUnknown; } }
-        private void AddTokens(string tokens, YukonLexer.TokenKind tokenkind)
-        {
-            StringBuilder curtoken = new StringBuilder();
-            for (int i = 0; i < tokens.Length; i++)
-            {
-                if (tokens[i] == ',')
-                {
-                    string s = curtoken.ToString().ToLower();
-                    if (!m_Words.ContainsKey(s))
-                        m_Words.Add(s, tokenkind);
-                    curtoken = new StringBuilder();
-                }
-                else
-                {
-                    curtoken.Append(tokens[i]);
-                }
-            }
-            if (curtoken.Length != 0) m_Words.Add(curtoken.ToString(), tokenkind);
-        }
+
+        private const string Fukeywords =
+            "CASE,RIGHT,COALESCE,SESSION_USER,CONVERT,SYSTEM_USER,LEFT,CURRENT_TIMESTAMP,CURRENT_USER,NULLIF,USER";
+
+        private readonly Dictionary<string, YukonLexer.TokenKind> m_Words =
+            new Dictionary<string, YukonLexer.TokenKind>();
+
         public Sqltokens()
         {
             AddTokens(Keywords, YukonLexer.TokenKind.tkKey);
@@ -115,6 +112,34 @@ namespace ExpressProfiler
             AddTokens(Types, YukonLexer.TokenKind.tkDatatype);
             AddTokens(Greykeywords, YukonLexer.TokenKind.tkGreyKeyword);
             AddTokens(Fukeywords, YukonLexer.TokenKind.tkFuKeyword);
+        }
+
+        public YukonLexer.TokenKind this[string token]
+        {
+            get
+            {
+                token = token.ToLower();
+                return m_Words.ContainsKey(token) ? m_Words[token] : YukonLexer.TokenKind.tkUnknown;
+            }
+        }
+
+        private void AddTokens(string tokens, YukonLexer.TokenKind tokenkind)
+        {
+            var curtoken = new StringBuilder();
+            foreach (var t in tokens)
+                if (t == ',')
+                {
+                    var s = curtoken.ToString().ToLower();
+                    if (!m_Words.ContainsKey(s))
+                        m_Words.Add(s, tokenkind);
+                    curtoken = new StringBuilder();
+                }
+                else
+                {
+                    curtoken.Append(t);
+                }
+
+            if (curtoken.Length != 0) m_Words.Add(curtoken.ToString(), tokenkind);
         }
     }
 }
